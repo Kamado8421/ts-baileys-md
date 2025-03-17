@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./database.db"
+}
+
+model Users {
+  jid                 String      @id
+  username            String      @default("Anônimo(a)")
+  level               Levels      @relation(fields: [levelId], references: [id])
+  levelId             String
+  xp                  Int         @default(5)
+  usedTotalCommans    Int         @default(0)
+  isPremium           Boolean     @default(false)
+  isBanned            Boolean     @default(false)
+  coins               Int         
+}
+
+model Levels {
+  id                  String      @id         @default(uuid())
+  name                String      @unique   
+  users               Users[]
+  minXp               Int         @unique     
+  maxXp               Int         @unique
+  reward              Int         @default(0)
+}
+
+model Groups {
+  jid                 String      @id
+  isBanned            Boolean     @default(false)
+  usedTotalCommans    Int         @default(0)
+}
