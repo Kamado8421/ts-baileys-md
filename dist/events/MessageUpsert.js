@@ -69,12 +69,6 @@ function EventMessageUpsert(bot) {
                             caption: (0, menu_1.menu)(pushName)
                         });
                         break;
-                    case 'teste-bttn':
-                        const r = yield bot.sendMessage(from, {
-                            text: 'Olá mundo',
-                            businessOwnerJid: '5598857429852@s.whatsapp.net'
-                        });
-                        break;
                     case 'rg':
                     case 'rigistro':
                         yield (0, registro_1.exec_registro)(MDEVBOT, { participantJid, pushName, args });
