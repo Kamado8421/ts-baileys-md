@@ -22,16 +22,43 @@ class BotFuncs {
         this.from = from;
         this.bot = bot;
     }
+    getFrom() {
+        return this.from;
+    }
     sendTextMessage(text_1) {
         return __awaiter(this, arguments, void 0, function* (text, reply = true) {
             yield this.bot.sendMessage(this.from, { text: text }, reply ? { quoted: this.msg } : {});
         });
     }
     sendImage(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ filename, caption = '', tempfolder = false, viewOnce = false, reply = true }) {
+        return __awaiter(this, arguments, void 0, function* ({ filename, caption = '', isUrlImage = false, tempfolder = false, viewOnce = false, reply = true }) {
             const filepath = tempfolder ? (0, functions_1.joinTempFolder)(filename) : path_1.default.resolve(config_1.IMAGES_FOLDER_PATH, filename);
-            yield this.bot.sendMessage(this.from, { image: fs_1.default.readFileSync(`${filepath}`), caption: caption, viewOnce: viewOnce }, reply ? { quoted: this.msg } : {});
+            yield this.bot.sendMessage(this.from, {
+                image: isUrlImage ? { url: filename } : fs_1.default.readFileSync(`${filepath}`),
+                caption: caption,
+                viewOnce: viewOnce
+            }, reply ? { quoted: this.msg } : {});
         });
+    }
+    sendVideo(_a, contextInfo_1) {
+        return __awaiter(this, arguments, void 0, function* ({ filename, caption = '', tempfolder = false, viewOnce = false, reply = true }, contextInfo) {
+            const filepath = tempfolder ? (0, functions_1.joinTempFolder)(filename) : path_1.default.resolve(config_1.IMAGES_FOLDER_PATH, filename);
+            yield this.bot.sendMessage(this.from, {
+                video: fs_1.default.readFileSync(`${filepath}`),
+                caption: caption,
+                viewOnce: viewOnce,
+                contextInfo: contextInfo || {}
+            }, reply ? { quoted: this.msg } : {});
+        });
+    }
+    gerenateQuotedText(text) {
+        return {
+            contextInfo: {
+                quotedMessage: {
+                    conversation: text
+                }
+            }
+        };
     }
     sendSticker(outputfile_1) {
         return __awaiter(this, arguments, void 0, function* (outputfile, reply = true) {

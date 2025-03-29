@@ -31,3 +31,14 @@ export const checksDependenciesDirs = () => {
     }
 
 }
+
+
+export const checkYoutubeUrl = (url: string) => {
+    const YouTubeDomains = [
+        'https://youtube.com/',
+        'https://www.youtube.com/',
+        'https://youtu.be/',
+    ] 
+
+    return !!YouTubeDomains.find(domain => url.startsWith(domain));
+}

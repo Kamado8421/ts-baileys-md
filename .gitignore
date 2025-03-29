@@ -1,2 +1,5 @@
-assets/qrcode
+assets/qrcode/*
+assets/downloads/*
+assets/temp/*
 node_modules/
+dist

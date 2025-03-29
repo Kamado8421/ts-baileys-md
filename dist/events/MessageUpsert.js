@@ -17,12 +17,11 @@ const loads_1 = __importDefault(require("../utils/loads"));
 const config_1 = require("../data/config");
 const bot_funcs_1 = __importDefault(require("../utils/bot-funcs"));
 const menu_1 = require("../templates/menus/menu");
-const downloader_1 = __importDefault(require("../functions/downloader"));
-const execs_terminal_1 = require("../functions/execs-terminal");
-const functions_1 = require("../functions");
 const functions_db_1 = require("../services/functions.db");
 const ping_message_1 = require("../templates/messages/ping.message");
 const registro_1 = require("../commands/members/registro");
+const sticker_1 = require("../commands/members/sticker");
+const play_1 = require("../commands/members/play");
 function EventMessageUpsert(bot) {
     return __awaiter(this, void 0, void 0, function* () {
         bot.ev.on('messages.upsert', (_a) => __awaiter(this, [_a], void 0, function* ({ messages }) {
@@ -59,7 +58,7 @@ function EventMessageUpsert(bot) {
                 const MDEVBOT = new bot_funcs_1.default(msg, from, bot);
                 switch (command.toLowerCase()) {
                     case 'ping':
-                        txt = (0, ping_message_1.pingMessage)({ username: ((_d = user === null || user === void 0 ? void 0 : user.info) === null || _d === void 0 ? void 0 : _d.username) || pushName, level: ((_e = user.rank) === null || _e === void 0 ? void 0 : _e.name) || 'Você não está no nosso banco de dados.' });
+                        txt = (0, ping_message_1.pingMessage)({ username: (((_d = user === null || user === void 0 ? void 0 : user.info) === null || _d === void 0 ? void 0 : _d.username) || pushName), level: (((_e = user.rank) === null || _e === void 0 ? void 0 : _e.name) || 'Você não está no nosso banco de dados.') });
                         MDEVBOT.sendTextMessage(txt);
                         break;
                     case 'menu':
@@ -68,6 +67,9 @@ function EventMessageUpsert(bot) {
                             filename: 'menu.jpg',
                             caption: (0, menu_1.menu)(pushName)
                         });
+                        break;
+                    case 'play-sem-api':
+                        yield (0, play_1.exec_playVideo)(MDEVBOT, args);
                         break;
                     case 'rg':
                     case 'rigistro':
@@ -80,31 +82,31 @@ function EventMessageUpsert(bot) {
                     case 'figurinha':
                         if (!isImage)
                             return MDEVBOT.sendTextMessage('A mensagem enviada precisa ser uma imagem.\n\n> *(OBS):* Envie o comando na legenda da imagem');
-                        filepath = yield (0, downloader_1.default)(msg);
-                        if (!filepath)
-                            return MDEVBOT.sendTextMessage('Obtive um erro ao receber a imagem. Tente novamente mais tarde.');
-                        let output = '';
-                        try {
-                            const [stickerFileFormated, outputFilename, filepaths] = yield (0, execs_terminal_1.transformerMediaToWebp)(idMessage, filepath);
-                            output = outputFilename;
-                            yield MDEVBOT.sendTextMessage('⌛ Aguarde, enquanto faço sua figurinha...');
-                            yield MDEVBOT.sendSticker(stickerFileFormated);
-                            if (filepaths)
-                                (0, functions_1.deleteFile)(filepaths);
-                            if (outputFilename)
-                                (0, functions_1.deleteFile)(outputFilename);
-                            if (stickerFileFormated)
-                                (0, functions_1.deleteFile)(stickerFileFormated);
-                        }
-                        catch (error) {
-                            console.error("Erro ao criar a figurinha:", error);
-                            MDEVBOT.sendTextMessage('Houve um erro ao processar sua figurinha. Tente novamente mais tarde.');
-                            if (filepath)
-                                (0, functions_1.deleteFile)(filepath);
-                            if (output)
-                                (0, functions_1.deleteFile)(output);
-                        }
+                        yield (0, sticker_1.exec_sticker)({ MDEVBOT, msg, idMessage });
                         break;
+                    /*filepath = await downloadMedia(msg);
+    
+                    if (!filepath) return MDEVBOT.sendTextMessage('Obtive um erro ao receber a imagem. Tente novamente mais tarde.');
+    
+                    let output = '';
+                    try {
+                        const [stickerFileFormated, outputFilename, filepaths] = await transformerMediaToWebp(idMessage, filepath);
+    
+                        output = outputFilename
+                        await MDEVBOT.sendTextMessage('⌛ Aguarde, enquanto faço sua figurinha...');
+                        await MDEVBOT.sendSticker(stickerFileFormated);
+    
+                        if (filepaths) deleteFile(filepaths);
+                        if (outputFilename) deleteFile(outputFilename);
+                        if (stickerFileFormated) deleteFile(stickerFileFormated);
+    
+                    } catch (error) {
+                        console.error("Erro ao criar a figurinha:", error);
+                        MDEVBOT.sendTextMessage('Houve um erro ao processar sua figurinha. Tente novamente mais tarde.');
+    
+                        if (filepath) deleteFile(filepath);
+                        if (output) deleteFile(output);
+                    }*/
                     default:
                         yield bot.sendMessage(from, { text: 'Este comando não existe.' });
                         break;

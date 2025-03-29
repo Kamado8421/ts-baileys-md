@@ -7,6 +7,7 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
+    "test": "node dist/test/index.js",
     "reset-bot": "rm -r assets/qrcode/*"
   },
   "keywords": [],

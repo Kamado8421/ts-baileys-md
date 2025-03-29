@@ -8,17 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const connection_1 = require("./connection");
+const MessageUpsert_1 = __importDefault(require("./events/MessageUpsert"));
+const GroupParticipantsUpdate_1 = __importDefault(require("./events/GroupParticipantsUpdate"));
 const checks_1 = require("./functions/checks");
-const jids_funcs_1 = require("./functions/jids-funcs");
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
         const bot = yield (0, connection_1.Connect)();
         (0, checks_1.checksDependenciesDirs)();
-        /*EventMessageUpsert(bot);
-        EventGroupParticipantsUpdate(bot);*/
-        yield bot.sendMessage((0, jids_funcs_1.generateUserJid)('559883528062'), { text: 'Luciano' });
+        (0, MessageUpsert_1.default)(bot);
+        (0, GroupParticipantsUpdate_1.default)(bot);
     });
 }
 start();
