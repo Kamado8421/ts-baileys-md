@@ -14,8 +14,13 @@ url = sys.argv[1]
 destino = './assets/temp'
 
 yt = YouTube(url)
-ys = yt.streams.get_highest_resolution()
+ys = yt.streams.filter(only_audio=True).first()
 
 arquivo_baixado = ys.download(output_path=destino)
 
-print(os.path.basename(arquivo_baixado))  # Retorna o nome do arquivo baixado
+# Renomeia o arquivo para .mp3
+base, ext = os.path.splitext(arquivo_baixado)
+novo_arquivo = base + ".mp3"
+os.rename(arquivo_baixado, novo_arquivo)
+
+print(os.path.basename(novo_arquivo))  # Retorna o nome do arquivo baixado

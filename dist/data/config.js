@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ANTI_PV_ON = exports.ANTI_GROUP_ON = exports.CONNECTION_SAVE_PATH = exports.IMAGES_FOLDER_PATH = exports.TEMP_FOLDER_PATH = exports.GENERATE_QRCODE_TERMINAL = exports.NOTIFY_BOT_ONLINE = exports.FOOTER_MESSAGE = exports.PHONE_NUMBER_OWNER = exports.WONER_NAME = exports.ICON_BOT_NAME = exports.COIN_NAME = exports.BOT_NAME = exports.PREFIX = void 0;
 const path_1 = __importDefault(require("path"));
 // variáveis de configuração
-exports.PREFIX = "---";
+exports.PREFIX = "/";
 exports.BOT_NAME = "MDEV'BOT";
 exports.COIN_NAME = "Dev-Coins";
 exports.ICON_BOT_NAME = "©";
@@ -20,5 +20,5 @@ exports.TEMP_FOLDER_PATH = path_1.default.resolve(__dirname, '..', '..', 'assets
 exports.IMAGES_FOLDER_PATH = path_1.default.resolve(__dirname, '..', '..', 'assets', 'images');
 exports.CONNECTION_SAVE_PATH = path_1.default.resolve(__dirname, "..", "..", "assets", "qrcode");
 // anti condições
-exports.ANTI_GROUP_ON = false; // se for grupo, o bot não responde
+exports.ANTI_GROUP_ON = true; // se for grupo, o bot não responde
 exports.ANTI_PV_ON = false; // se for privado, o bot não responde

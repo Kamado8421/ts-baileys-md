@@ -17,13 +17,17 @@ const functions_1 = require("../functions");
 const path_1 = __importDefault(require("path"));
 const config_1 = require("../data/config");
 class BotFuncs {
-    constructor(msg, from, bot) {
+    constructor(msg, from, bot, user) {
         this.msg = msg;
         this.from = from;
         this.bot = bot;
+        this.user = user;
     }
     getFrom() {
         return this.from;
+    }
+    getUser() {
+        return this.user;
     }
     sendTextMessage(text_1) {
         return __awaiter(this, arguments, void 0, function* (text, reply = true) {
@@ -40,25 +44,20 @@ class BotFuncs {
             }, reply ? { quoted: this.msg } : {});
         });
     }
-    sendVideo(_a, contextInfo_1) {
-        return __awaiter(this, arguments, void 0, function* ({ filename, caption = '', tempfolder = false, viewOnce = false, reply = true }, contextInfo) {
+    sendVideo(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ filename, caption = '', tempfolder = false, viewOnce = false, reply = true, quotedText = '' }) {
             const filepath = tempfolder ? (0, functions_1.joinTempFolder)(filename) : path_1.default.resolve(config_1.IMAGES_FOLDER_PATH, filename);
             yield this.bot.sendMessage(this.from, {
                 video: fs_1.default.readFileSync(`${filepath}`),
                 caption: caption,
                 viewOnce: viewOnce,
-                contextInfo: contextInfo || {}
+                contextInfo: quotedText ? {
+                    quotedMessage: {
+                        conversation: quotedText
+                    }
+                } : {}
             }, reply ? { quoted: this.msg } : {});
         });
-    }
-    gerenateQuotedText(text) {
-        return {
-            contextInfo: {
-                quotedMessage: {
-                    conversation: text
-                }
-            }
-        };
     }
     sendSticker(outputfile_1) {
         return __awaiter(this, arguments, void 0, function* (outputfile, reply = true) {

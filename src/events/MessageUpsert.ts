@@ -12,7 +12,9 @@ import { pingMessage } from "../templates/messages/ping.message";
 
 import { exec_registro } from '../commands/members/registro'
 import { exec_sticker } from '../commands/members/sticker';
-import { exec_playVideo } from '../commands/members/play';
+import { exec_playVideo } from '../commands/members/play-video';
+import { exec_ytSearch } from '../commands/members/yt-search';
+import { exec_playAudio } from '../commands/members/play-audio';
 
 export default async function EventMessageUpsert(bot: WASocket) {
     bot.ev.on('messages.upsert', async ({ messages }) => {
@@ -52,7 +54,7 @@ export default async function EventMessageUpsert(bot: WASocket) {
         if (isCommand) {
 
             await bot.readMessages([key]);
-            const MDEVBOT = new BotFuncs(msg, from, bot);
+            const MDEVBOT = new BotFuncs(msg, from, bot, user);
 
             switch (command.toLowerCase()) {
                 case 'ping':
@@ -66,11 +68,20 @@ export default async function EventMessageUpsert(bot: WASocket) {
                         caption: menu(pushName)
                     });
                     break
-                case 'play-sem-api':
-                    await exec_playVideo(MDEVBOT, args);
+                case 'play-video': case 'play-v':
+                    if(!args) return MDEVBOT.sendTextMessage('Envie um link do Youtube ou um título de vídeo após o comando')
+                    await exec_playVideo(MDEVBOT, args, pushName);
+                    break;
+                case 'play-audio': case 'play-a':
+                    if(!args) return MDEVBOT.sendTextMessage('Envie um link do Youtube ou um título de vídeo após o comando')
+                    await exec_playAudio(MDEVBOT, args, pushName);
                     break;
                 case 'rg': case 'rigistro':
                     await exec_registro(MDEVBOT, { participantJid, pushName, args });
+                    break;
+
+                case 'yt-search': case 'yt-s': case 'buscar-yt':
+                    exec_ytSearch(MDEVBOT, args);
                     break;
 
                 case 'f': case 's': case 'figu': case 'sticker': case 'figurinha':

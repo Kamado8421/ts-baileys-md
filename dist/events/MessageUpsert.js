@@ -21,7 +21,9 @@ const functions_db_1 = require("../services/functions.db");
 const ping_message_1 = require("../templates/messages/ping.message");
 const registro_1 = require("../commands/members/registro");
 const sticker_1 = require("../commands/members/sticker");
-const play_1 = require("../commands/members/play");
+const play_video_1 = require("../commands/members/play-video");
+const yt_search_1 = require("../commands/members/yt-search");
+const play_audio_1 = require("../commands/members/play-audio");
 function EventMessageUpsert(bot) {
     return __awaiter(this, void 0, void 0, function* () {
         bot.ev.on('messages.upsert', (_a) => __awaiter(this, [_a], void 0, function* ({ messages }) {
@@ -55,7 +57,7 @@ function EventMessageUpsert(bot) {
             let filepath, arg, txt = '';
             if (isCommand) {
                 yield bot.readMessages([key]);
-                const MDEVBOT = new bot_funcs_1.default(msg, from, bot);
+                const MDEVBOT = new bot_funcs_1.default(msg, from, bot, user);
                 switch (command.toLowerCase()) {
                     case 'ping':
                         txt = (0, ping_message_1.pingMessage)({ username: (((_d = user === null || user === void 0 ? void 0 : user.info) === null || _d === void 0 ? void 0 : _d.username) || pushName), level: (((_e = user.rank) === null || _e === void 0 ? void 0 : _e.name) || 'Você não está no nosso banco de dados.') });
@@ -68,12 +70,26 @@ function EventMessageUpsert(bot) {
                             caption: (0, menu_1.menu)(pushName)
                         });
                         break;
-                    case 'play-sem-api':
-                        yield (0, play_1.exec_playVideo)(MDEVBOT, args);
+                    case 'play-video':
+                    case 'play-v':
+                        if (!args)
+                            return MDEVBOT.sendTextMessage('Envie um link do Youtube ou um título de vídeo após o comando');
+                        yield (0, play_video_1.exec_playVideo)(MDEVBOT, args, pushName);
+                        break;
+                    case 'play-audio':
+                    case 'play-a':
+                        if (!args)
+                            return MDEVBOT.sendTextMessage('Envie um link do Youtube ou um título de vídeo após o comando');
+                        yield (0, play_audio_1.exec_playAudio)(MDEVBOT, args, pushName);
                         break;
                     case 'rg':
                     case 'rigistro':
                         yield (0, registro_1.exec_registro)(MDEVBOT, { participantJid, pushName, args });
+                        break;
+                    case 'yt-search':
+                    case 'yt-s':
+                    case 'buscar-yt':
+                        (0, yt_search_1.exec_ytSearch)(MDEVBOT, args);
                         break;
                     case 'f':
                     case 's':
