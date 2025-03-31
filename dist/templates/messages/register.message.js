@@ -8,7 +8,7 @@ const registerMessage = (data) => {
     return `
 > ┏━━━━┉┉┉┅┅------┅┅┉┉┉━━━━┓
 
-'*🤖✅ Usuário Registrado com sucesso!*
+*🤖✅ Usuário Registrado com sucesso!*
 
 - ❧ *👨‍💻 Usuário(a):* ${data.user.username}
 - ❧ *💵 Saldo:* ${data.user.coins} _${config_1.COIN_NAME}_

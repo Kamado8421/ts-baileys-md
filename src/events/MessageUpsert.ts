@@ -51,7 +51,7 @@ export default async function EventMessageUpsert(bot: WASocket) {
         const isSticker = messageType === 'stickerMessage';
 
         let filepath, arg, txt = '';
-        if (isCommand) {
+        if (isCommand && command) {
 
             await bot.readMessages([key]);
             const MDEVBOT = new BotFuncs(msg, from, bot, user);
@@ -67,15 +67,18 @@ export default async function EventMessageUpsert(bot: WASocket) {
                         filename: 'menu.jpg',
                         caption: menu(pushName)
                     });
-                    break
+                    break;
+
                 case 'play-video': case 'play-v':
                     if(!args) return MDEVBOT.sendTextMessage('Envie um link do Youtube ou um título de vídeo após o comando')
                     await exec_playVideo(MDEVBOT, args, pushName);
                     break;
+
                 case 'play-audio': case 'play-a':
                     if(!args) return MDEVBOT.sendTextMessage('Envie um link do Youtube ou um título de vídeo após o comando')
                     await exec_playAudio(MDEVBOT, args, pushName);
                     break;
+
                 case 'rg': case 'rigistro':
                     await exec_registro(MDEVBOT, { participantJid, pushName, args });
                     break;

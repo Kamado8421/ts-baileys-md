@@ -55,7 +55,7 @@ function EventMessageUpsert(bot) {
             const isVideo = messageType === 'videoMessage';
             const isSticker = messageType === 'stickerMessage';
             let filepath, arg, txt = '';
-            if (isCommand) {
+            if (isCommand && command) {
                 yield bot.readMessages([key]);
                 const MDEVBOT = new bot_funcs_1.default(msg, from, bot, user);
                 switch (command.toLowerCase()) {
@@ -100,29 +100,6 @@ function EventMessageUpsert(bot) {
                             return MDEVBOT.sendTextMessage('A mensagem enviada precisa ser uma imagem.\n\n> *(OBS):* Envie o comando na legenda da imagem');
                         yield (0, sticker_1.exec_sticker)({ MDEVBOT, msg, idMessage });
                         break;
-                    /*filepath = await downloadMedia(msg);
-    
-                    if (!filepath) return MDEVBOT.sendTextMessage('Obtive um erro ao receber a imagem. Tente novamente mais tarde.');
-    
-                    let output = '';
-                    try {
-                        const [stickerFileFormated, outputFilename, filepaths] = await transformerMediaToWebp(idMessage, filepath);
-    
-                        output = outputFilename
-                        await MDEVBOT.sendTextMessage('⌛ Aguarde, enquanto faço sua figurinha...');
-                        await MDEVBOT.sendSticker(stickerFileFormated);
-    
-                        if (filepaths) deleteFile(filepaths);
-                        if (outputFilename) deleteFile(outputFilename);
-                        if (stickerFileFormated) deleteFile(stickerFileFormated);
-    
-                    } catch (error) {
-                        console.error("Erro ao criar a figurinha:", error);
-                        MDEVBOT.sendTextMessage('Houve um erro ao processar sua figurinha. Tente novamente mais tarde.');
-    
-                        if (filepath) deleteFile(filepath);
-                        if (output) deleteFile(output);
-                    }*/
                     default:
                         yield bot.sendMessage(from, { text: 'Este comando não existe.' });
                         break;
