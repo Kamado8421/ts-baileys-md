@@ -1,7 +1,7 @@
 import { UserProps } from './../services/functions.db';
 import { WASocket } from "@whiskeysockets/baileys";
 import loads from "../utils/loads";
-import { ANTI_GROUP_ON, ANTI_PV_ON, BOT_NAME, PREFIX } from "../data/config";
+import { ANTI_GROUP_ON, ANTI_PV_ON, BOT_NAME, PREFIX, WONER_MESSAGE_ONLY_ON } from "../data/config";
 import BotFuncs from "../utils/bot-funcs";
 import { menu } from "../templates/menus/menu";
 import downloadMedia from "../functions/downloader";
@@ -27,6 +27,7 @@ export default async function EventMessageUpsert(bot: WASocket) {
         const { isCommand, command, from, isGroup, isWoner, pushName, args, participantJId, message } = data;
         const participantJid = !isGroup ? from : `${participantJId}`
 
+        if(WONER_MESSAGE_ONLY_ON && !isWoner) return;
         if (ANTI_GROUP_ON && isGroup) return;
         if (ANTI_PV_ON && !isGroup) return;
 

@@ -51,6 +51,7 @@ const pino_1 = __importDefault(require("pino"));
 const cfonts_1 = __importDefault(require("cfonts"));
 const config_1 = require("../data/config");
 const input_1 = require("./input");
+const jids_funcs_1 = require("../functions/jids-funcs");
 function Connect() {
     return __awaiter(this, void 0, void 0, function* () {
         console.clear();
@@ -82,19 +83,18 @@ function Connect() {
                     Connect();
                 }
             }
-            /*
-            if (NOTIFY_BOT_ONLINE && PHONE_NUMBER_OWNER) {
+            if (config_1.NOTIFY_BOT_ONLINE && config_1.PHONE_NUMBER_OWNER) {
                 try {
-    
-                    const jid = generateUserJid(PHONE_NUMBER_OWNER);
-                    await bot.sendMessage(jid, { text: '⚠️ Bot online!' });
-    
-                } catch (error) {
-                    console.log('Não consegui notificar ao dono que estou online.\nHá possivelmente uma irregularidade no número de telefone informado!!')
+                    const jid = (0, jids_funcs_1.generateUserJid)(config_1.PHONE_NUMBER_OWNER);
+                    yield bot.sendMessage(jid, { text: '⚠️ Bot online!' });
                 }
-            } else if (NOTIFY_BOT_ONLINE && !PHONE_NUMBER_OWNER) {
-                console.log('   - Não consegui notificar ao dono que estou online.\n    O número de telefone não foi informado nas configurações!!\n')
-            }*/
+                catch (error) {
+                    //console.log('Não consegui notificar ao dono que estou online.\nHá possivelmente uma irregularidade no número de telefone informado!!')
+                }
+            }
+            else if (config_1.NOTIFY_BOT_ONLINE && !config_1.PHONE_NUMBER_OWNER) {
+                //console.log('   - Não consegui notificar ao dono que estou online.\n    O número de telefone não foi informado nas configurações!!\n')
+            }
         }));
         bot.ev.on("creds.update", saveCreds);
         cfonts_1.default.say("M'DEV - BOT", {

@@ -20,5 +20,5 @@ export const CONNECTION_SAVE_PATH = path.resolve(__dirname, "..", "..", "assets"
 // anti condições
 export const ANTI_GROUP_ON = true; // se for grupo, o bot não responde
 export const ANTI_PV_ON = false; // se for privado, o bot não responde
-
+export const WONER_MESSAGE_ONLY_ON = true; // se ativo, só vai responder mensagem do dono;
 

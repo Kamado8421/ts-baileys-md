@@ -35,6 +35,8 @@ function EventMessageUpsert(bot) {
             const data = yield (0, loads_1.default)(msg);
             const { isCommand, command, from, isGroup, isWoner, pushName, args, participantJId, message } = data;
             const participantJid = !isGroup ? from : `${participantJId}`;
+            if (config_1.WONER_MESSAGE_ONLY_ON && !isWoner)
+                return;
             if (config_1.ANTI_GROUP_ON && isGroup)
                 return;
             if (config_1.ANTI_PV_ON && !isGroup)

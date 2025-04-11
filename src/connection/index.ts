@@ -52,7 +52,7 @@ export async function Connect() {
                 Connect();
             }
         }
-        /*
+        
         if (NOTIFY_BOT_ONLINE && PHONE_NUMBER_OWNER) {
             try {
 
@@ -60,11 +60,11 @@ export async function Connect() {
                 await bot.sendMessage(jid, { text: '⚠️ Bot online!' });
 
             } catch (error) {
-                console.log('Não consegui notificar ao dono que estou online.\nHá possivelmente uma irregularidade no número de telefone informado!!')
+                //console.log('Não consegui notificar ao dono que estou online.\nHá possivelmente uma irregularidade no número de telefone informado!!')
             }
         } else if (NOTIFY_BOT_ONLINE && !PHONE_NUMBER_OWNER) {
-            console.log('   - Não consegui notificar ao dono que estou online.\n    O número de telefone não foi informado nas configurações!!\n')
-        }*/
+            //console.log('   - Não consegui notificar ao dono que estou online.\n    O número de telefone não foi informado nas configurações!!\n')
+        }
     });
 
     bot.ev.on("creds.update", saveCreds);
