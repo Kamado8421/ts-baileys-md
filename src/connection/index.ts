@@ -12,6 +12,7 @@ import { CONNECTION_SAVE_PATH, GENERATE_QRCODE_TERMINAL, NOTIFY_BOT_ONLINE, PHON
 import { InputText } from "./input";
 import { generateUserJid } from "../functions/jids-funcs";
 
+var wonerNotified = false;
 export async function Connect() {
 
     console.clear();
@@ -31,7 +32,7 @@ export async function Connect() {
     });
 
     if (!bot.authState.creds.registered && !GENERATE_QRCODE_TERMINAL) {
-        const numeroWhatsApp = await InputText("Informe o seu número de WhatsApp \x1b[1;33m(Somente Número)\x1b[m: ");
+        const numeroWhatsApp = '559885742985'//await InputText("Informe o seu número de WhatsApp \x1b[1;33m(Somente Número)\x1b[m: ");
 
         if (!numeroWhatsApp) {
             throw new Error("Número de WhatsApp inválido!");
@@ -52,34 +53,37 @@ export async function Connect() {
                 Connect();
             }
         }
-        
-        if (NOTIFY_BOT_ONLINE && PHONE_NUMBER_OWNER) {
-            try {
 
-                const jid = generateUserJid(PHONE_NUMBER_OWNER);
-                await bot.sendMessage(jid, { text: '⚠️ Bot online!' });
+        // if (NOTIFY_BOT_ONLINE && PHONE_NUMBER_OWNER) {
+        //     try {
 
-            } catch (error) {
-                //console.log('Não consegui notificar ao dono que estou online.\nHá possivelmente uma irregularidade no número de telefone informado!!')
-            }
-        } else if (NOTIFY_BOT_ONLINE && !PHONE_NUMBER_OWNER) {
-            //console.log('   - Não consegui notificar ao dono que estou online.\n    O número de telefone não foi informado nas configurações!!\n')
-        }
+        //         const jid = generateUserJid(PHONE_NUMBER_OWNER);
+        //         if (!wonerNotified) {
+        //             await bot.sendMessage(jid, { text: '⚠️ Bot online!' });
+        //             wonerNotified = true
+        //         }
+
+        //     } catch (error) {
+        //         //console.log('Não consegui notificar ao dono que estou online.\nHá possivelmente uma irregularidade no número de telefone informado!!')
+        //     }
+        // } else if (NOTIFY_BOT_ONLINE && !PHONE_NUMBER_OWNER) {
+        //     //console.log('   - Não consegui notificar ao dono que estou online.\n    O número de telefone não foi informado nas configurações!!\n')
+        // }
     });
 
     bot.ev.on("creds.update", saveCreds);
 
-    
+
     CFonts.say("M'DEV - BOT", {
-        font: 'block',            
-        align: 'center',            
+        font: 'block',
+        align: 'center',
         colors: ['green', 'yellow'],
         background: 'transparent',
-        letterSpacing: 1,       
-        lineHeight: 1,              
-        space: true,                
-        maxLength: '0',             
-        gradient: true            
+        letterSpacing: 1,
+        lineHeight: 1,
+        space: true,
+        maxLength: '0',
+        gradient: true
     });
 
     console.log("\x1b[1;32m O Bot Está Pronto!! \x1b[m")

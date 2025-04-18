@@ -55,7 +55,7 @@ export default async function EventMessageUpsert(bot: WASocket) {
         if (isCommand && command) {
 
             await bot.readMessages([key]);
-            const MDEVBOT = new BotFuncs(msg, from, bot, user);
+            const MDEVBOT = new BotFuncs(msg, from, bot, user, isWoner);
 
             switch (command.toLowerCase()) {
                 case 'ping':
@@ -70,7 +70,7 @@ export default async function EventMessageUpsert(bot: WASocket) {
                     });
                     break;
 
-                case 'play-video': case 'play-v':
+                case 'play-video': case 'play-v': case 'playv' :
                     if(!args) return MDEVBOT.sendTextMessage('Envie um link do Youtube ou um título de vídeo após o comando')
                     await exec_playVideo(MDEVBOT, args, pushName);
                     break;

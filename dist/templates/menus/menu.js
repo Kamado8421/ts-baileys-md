@@ -13,6 +13,9 @@ const menu = (pushName) => {
 ╭━━⪩ COMANDOS ATIVOS ⪨━━
 ┃╭━━─ ≪ •❈• ≫ ─━━╮
 ┃╎${config_1.PREFIX}ping
+┃╎${config_1.PREFIX}play-video + link ou titulo
+┃╎${config_1.PREFIX}yt-s + titulo
+┃╎${config_1.PREFIX}rg + seu nome
 ┃╎${config_1.PREFIX}sticker
 ┃╰━━─ ≪ •❈• ≫ ─━━╯
 

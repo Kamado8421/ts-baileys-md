@@ -48,6 +48,7 @@ export const exec_playVideo = async (MDEVBOT: BotFuncs, url: string, pushName: s
         video = search;
     }
 
+    await MDEVBOT.sendTextMessage('🤖⌛ Processando sua requisição, aguarde...');
     const mp4 = await downloadYoutubeVideo(MDEVBOT, url);
 
     const pathFile = joinTempFolder(mp4);

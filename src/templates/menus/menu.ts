@@ -11,6 +11,9 @@ return `
 ╭━━⪩ COMANDOS ATIVOS ⪨━━
 ┃╭━━─ ≪ •❈• ≫ ─━━╮
 ┃╎${PREFIX}ping
+┃╎${PREFIX}play-video + link ou titulo
+┃╎${PREFIX}yt-s + titulo
+┃╎${PREFIX}rg + seu nome
 ┃╎${PREFIX}sticker
 ┃╰━━─ ≪ •❈• ≫ ─━━╯
 

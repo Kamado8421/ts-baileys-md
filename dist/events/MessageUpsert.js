@@ -74,6 +74,7 @@ function EventMessageUpsert(bot) {
                         break;
                     case 'play-video':
                     case 'play-v':
+                    case 'playv':
                         if (!args)
                             return MDEVBOT.sendTextMessage('Envie um link do Youtube ou um título de vídeo após o comando');
                         yield (0, play_video_1.exec_playVideo)(MDEVBOT, args, pushName);

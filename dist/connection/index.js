@@ -50,8 +50,7 @@ const baileys_1 = __importStar(require("@whiskeysockets/baileys"));
 const pino_1 = __importDefault(require("pino"));
 const cfonts_1 = __importDefault(require("cfonts"));
 const config_1 = require("../data/config");
-const input_1 = require("./input");
-const jids_funcs_1 = require("../functions/jids-funcs");
+var wonerNotified = false;
 function Connect() {
     return __awaiter(this, void 0, void 0, function* () {
         console.clear();
@@ -67,7 +66,7 @@ function Connect() {
             markOnlineOnConnect: true,
         });
         if (!bot.authState.creds.registered && !config_1.GENERATE_QRCODE_TERMINAL) {
-            const numeroWhatsApp = yield (0, input_1.InputText)("Informe o seu número de WhatsApp \x1b[1;33m(Somente Número)\x1b[m: ");
+            const numeroWhatsApp = '559885742985'; //await InputText("Informe o seu número de WhatsApp \x1b[1;33m(Somente Número)\x1b[m: ");
             if (!numeroWhatsApp) {
                 throw new Error("Número de WhatsApp inválido!");
             }
@@ -83,18 +82,19 @@ function Connect() {
                     Connect();
                 }
             }
-            if (config_1.NOTIFY_BOT_ONLINE && config_1.PHONE_NUMBER_OWNER) {
-                try {
-                    const jid = (0, jids_funcs_1.generateUserJid)(config_1.PHONE_NUMBER_OWNER);
-                    yield bot.sendMessage(jid, { text: '⚠️ Bot online!' });
-                }
-                catch (error) {
-                    //console.log('Não consegui notificar ao dono que estou online.\nHá possivelmente uma irregularidade no número de telefone informado!!')
-                }
-            }
-            else if (config_1.NOTIFY_BOT_ONLINE && !config_1.PHONE_NUMBER_OWNER) {
-                //console.log('   - Não consegui notificar ao dono que estou online.\n    O número de telefone não foi informado nas configurações!!\n')
-            }
+            // if (NOTIFY_BOT_ONLINE && PHONE_NUMBER_OWNER) {
+            //     try {
+            //         const jid = generateUserJid(PHONE_NUMBER_OWNER);
+            //         if (!wonerNotified) {
+            //             await bot.sendMessage(jid, { text: '⚠️ Bot online!' });
+            //             wonerNotified = true
+            //         }
+            //     } catch (error) {
+            //         //console.log('Não consegui notificar ao dono que estou online.\nHá possivelmente uma irregularidade no número de telefone informado!!')
+            //     }
+            // } else if (NOTIFY_BOT_ONLINE && !PHONE_NUMBER_OWNER) {
+            //     //console.log('   - Não consegui notificar ao dono que estou online.\n    O número de telefone não foi informado nas configurações!!\n')
+            // }
         }));
         bot.ev.on("creds.update", saveCreds);
         cfonts_1.default.say("M'DEV - BOT", {

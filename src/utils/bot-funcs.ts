@@ -20,7 +20,8 @@ export default class BotFuncs {
         private msg: proto.IWebMessageInfo,
         private from: string,
         private bot: WASocket,
-        private user: UserProps
+        private user: UserProps,
+        public isWornerMessage?: boolean,
     ) { }
 
     getFrom() {
