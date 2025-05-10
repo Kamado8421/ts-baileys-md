@@ -9,7 +9,6 @@ async function start() {
 
     EventMessageUpsert(bot);
     EventGroupParticipantsUpdate(bot);
-
 }
 
 start();

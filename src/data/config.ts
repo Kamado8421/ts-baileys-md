@@ -7,11 +7,12 @@ export const COIN_NAME = "Dev-Coins"
 export const ICON_BOT_NAME = "©";
 export const WONER_NAME = "M'Dev Systems";
 export const PHONE_NUMBER_OWNER = "559883528062";
+export const PHONE_NUMBER_BOT = "559885742985";
 export const FOOTER_MESSAGE = `> ${ICON_BOT_NAME} ${BOT_NAME} ²⁰²⁵`;
 
 // ativadores
 export const NOTIFY_BOT_ONLINE = true; // avisa ao dono quando o bot for inicado.
-export const GENERATE_QRCODE_TERMINAL = false; // gera o qrcode de conexão no terminal
+export const GENERATE_QRCODE_TERMINAL = true; // gera o qrcode de conexão no terminal
 
 export const TEMP_FOLDER_PATH = path.resolve(__dirname, '..', '..', 'assets', 'temp');
 export const IMAGES_FOLDER_PATH = path.resolve(__dirname, '..', '..', 'assets', 'images');

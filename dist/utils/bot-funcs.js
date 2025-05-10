@@ -17,11 +17,12 @@ const functions_1 = require("../functions");
 const path_1 = __importDefault(require("path"));
 const config_1 = require("../data/config");
 class BotFuncs {
-    constructor(msg, from, bot, user) {
+    constructor(msg, from, bot, user, isWornerMessage) {
         this.msg = msg;
         this.from = from;
         this.bot = bot;
         this.user = user;
+        this.isWornerMessage = isWornerMessage;
     }
     getFrom() {
         return this.from;

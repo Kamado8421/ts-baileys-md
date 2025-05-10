@@ -24,6 +24,7 @@ const sticker_1 = require("../commands/members/sticker");
 const play_video_1 = require("../commands/members/play-video");
 const yt_search_1 = require("../commands/members/yt-search");
 const play_audio_1 = require("../commands/members/play-audio");
+const group_funcs_1 = __importDefault(require("../utils/group-funcs"));
 function EventMessageUpsert(bot) {
     return __awaiter(this, void 0, void 0, function* () {
         bot.ev.on('messages.upsert', (_a) => __awaiter(this, [_a], void 0, function* ({ messages }) {
@@ -35,6 +36,9 @@ function EventMessageUpsert(bot) {
             const data = yield (0, loads_1.default)(msg);
             const { isCommand, command, from, isGroup, isWoner, pushName, args, participantJId, message } = data;
             const participantJid = !isGroup ? from : `${participantJId}`;
+            const GROUP_FUNCS = new group_funcs_1.default(bot, from);
+            const isAdmin = isGroup ? GROUP_FUNCS.isAdmin(participantJid) : false;
+            const isBotAdmin = isGroup ? GROUP_FUNCS.amIAdmin() : false;
             if (config_1.WONER_MESSAGE_ONLY_ON && !isWoner)
                 return;
             if (config_1.ANTI_GROUP_ON && isGroup)
@@ -59,7 +63,7 @@ function EventMessageUpsert(bot) {
             let filepath, arg, txt = '';
             if (isCommand && command) {
                 yield bot.readMessages([key]);
-                const MDEVBOT = new bot_funcs_1.default(msg, from, bot, user);
+                const MDEVBOT = new bot_funcs_1.default(msg, from, bot, user, isWoner);
                 switch (command.toLowerCase()) {
                     case 'ping':
                         txt = (0, ping_message_1.pingMessage)({ username: (((_d = user === null || user === void 0 ? void 0 : user.info) === null || _d === void 0 ? void 0 : _d.username) || pushName), level: (((_e = user.rank) === null || _e === void 0 ? void 0 : _e.name) || 'Você não está no nosso banco de dados.') });
@@ -102,6 +106,53 @@ function EventMessageUpsert(bot) {
                         if (!isImage)
                             return MDEVBOT.sendTextMessage('A mensagem enviada precisa ser uma imagem.\n\n> *(OBS):* Envie o comando na legenda da imagem');
                         yield (0, sticker_1.exec_sticker)({ MDEVBOT, msg, idMessage });
+                        break;
+                    // comandos de admins
+                    case 'ban':
+                        break;
+                    case 'nome-grp':
+                    case 'nome-grupo':
+                    case 'nome-gp':
+                        break;
+                    case 'desc':
+                    case 'descricao':
+                    case 'regras':
+                        if (!isGroup)
+                            return MDEVBOT.sendTextMessage('Este comando funciona somente em grupos.');
+                        txt = yield GROUP_FUNCS.getGroupDescription();
+                        MDEVBOT.sendTextMessage(txt);
+                        break;
+                    case 'novadesc':
+                    case 'nvdesc':
+                    case 'novadescricao':
+                        if (!isGroup)
+                            return MDEVBOT.sendTextMessage('Este comando funciona somente em grupos.');
+                        if (!args)
+                            return MDEVBOT.sendTextMessage('Envie junto com o comando a nova descrição do grupo.\n\n> *Exemplo:* ' + config_1.PREFIX + 'desc Nova Descrição');
+                        if (!isAdmin || !isBotAdmin)
+                            return MDEVBOT.sendTextMessage('Este comando só funciona quando eu e você somo Admins.');
+                        GROUP_FUNCS.updateGroupDescription(args);
+                        MDEVBOT.sendTextMessage('Descrição alterada com sucesso!');
+                        break;
+                    case 'novonome':
+                    case 'novo-nome':
+                        if (!isGroup)
+                            return MDEVBOT.sendTextMessage('Este comando funciona somente em grupos.');
+                        if (!args)
+                            return MDEVBOT.sendTextMessage('Envie junto com o comando o novo nome do grupo.\n\n> *Exemplo:* ' + config_1.PREFIX + 'novonome Novo nome');
+                        if (!isAdmin)
+                            return MDEVBOT.sendTextMessage('Somente Admins podem usar esse comando.');
+                        if (!isBotAdmin)
+                            return MDEVBOT.sendTextMessage('Lamento, mas eu não sou admin pra executar esse comando.');
+                        try {
+                            yield GROUP_FUNCS.updateGroupName(args);
+                            yield MDEVBOT.sendTextMessage('Nome do grupo alterado com sucesso!');
+                        }
+                        catch (error) {
+                            if (error === 'not-authorized')
+                                return MDEVBOT.sendTextMessage('Nome do grupo alterado com sucesso!');
+                            MDEVBOT.sendTextMessage('Obtive um erro.');
+                        }
                         break;
                     default:
                         yield bot.sendMessage(from, { text: 'Este comando não existe.' });

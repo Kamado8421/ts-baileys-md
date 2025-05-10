@@ -65,17 +65,24 @@ function Connect() {
             browser: ["Ubuntu", "Chrome", "20.0.04"],
             markOnlineOnConnect: true,
         });
-        if (!bot.authState.creds.registered && !config_1.GENERATE_QRCODE_TERMINAL) {
-            const numeroWhatsApp = '559885742985'; //await InputText("Informe o seu número de WhatsApp \x1b[1;33m(Somente Número)\x1b[m: ");
-            if (!numeroWhatsApp) {
-                throw new Error("Número de WhatsApp inválido!");
-            }
-            const code = yield bot.requestPairingCode(numeroWhatsApp);
-            console.log(`Código de pareamento: ${code}`);
-        }
         bot.ev.on("connection.update", (update) => __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
             const { connection, lastDisconnect } = update;
+            if (connection === 'open') {
+                if (!bot.authState.creds.registered && !config_1.GENERATE_QRCODE_TERMINAL) {
+                    const numeroWhatsApp = '559885742985'; //await InputText("Informe o seu número de WhatsApp \x1b[1;33m(Somente Número)\x1b[m: ");
+                    if (!numeroWhatsApp) {
+                        throw new Error("Número de WhatsApp inválido!");
+                    }
+                    try {
+                        const code = yield bot.requestPairingCode(numeroWhatsApp);
+                        console.log(`Código de pareamento: ${code}`);
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
             if (connection === "close") {
                 const shouldReconnect = ((_b = (_a = lastDisconnect === null || lastDisconnect === void 0 ? void 0 : lastDisconnect.error) === null || _a === void 0 ? void 0 : _a.output) === null || _b === void 0 ? void 0 : _b.statusCode) !== baileys_1.DisconnectReason.loggedOut;
                 if (shouldReconnect) {

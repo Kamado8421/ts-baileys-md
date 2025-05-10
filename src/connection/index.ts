@@ -31,20 +31,27 @@ export async function Connect() {
         markOnlineOnConnect: true,
     });
 
-    if (!bot.authState.creds.registered && !GENERATE_QRCODE_TERMINAL) {
-        const numeroWhatsApp = '559885742985'//await InputText("Informe o seu número de WhatsApp \x1b[1;33m(Somente Número)\x1b[m: ");
-
-        if (!numeroWhatsApp) {
-            throw new Error("Número de WhatsApp inválido!");
-        }
-
-        const code = await bot.requestPairingCode(numeroWhatsApp);
-
-        console.log(`Código de pareamento: ${code}`);
-    }
-
     bot.ev.on("connection.update", async (update) => {
         const { connection, lastDisconnect } = update;
+
+
+        if (connection === 'open') {
+            if (!bot.authState.creds.registered && !GENERATE_QRCODE_TERMINAL) {
+                const numeroWhatsApp = '559885742985'//await InputText("Informe o seu número de WhatsApp \x1b[1;33m(Somente Número)\x1b[m: ");
+
+                if (!numeroWhatsApp) {
+                    throw new Error("Número de WhatsApp inválido!");
+                }
+
+                try {
+                    const code = await bot.requestPairingCode(numeroWhatsApp);
+                    console.log(`Código de pareamento: ${code}`);
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        }
+
 
         if (connection === "close") {
             const shouldReconnect = (lastDisconnect?.error as Boom)?.output?.statusCode !== DisconnectReason.loggedOut;
